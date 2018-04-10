@@ -2,16 +2,7 @@
 session_start();
 $_SESSION["frage_id"] = "";
 $_SESSION["kategorie"] = "";
-?>
-<!DOCTYPE html>
-<html>
-<head>
-    <meta charset="utf-8">
-    <title>Fragen</title>
-</head>
-
-<?php
-
+$_SESSION["antworten"] = array();
 
 $server ='mysql:dbname=fragebogen;host=localhost';
 $username='root';
@@ -49,9 +40,10 @@ catch (PDOException $error) {
 <?php
 try {
     $query = 'SELECT * FROM kategorien';
-
-    echo '<form style="display: flex; flex-direction: row;" name="fragen" method="GET" action="'.htmlspecialchars($_SERVER["PHP_SELF"]).'">';
-    echo '<select class="form-control" name="kat">\\n';
+?>
+    <form style="display: flex; flex-direction: row;" name="fragen" method="GET" action="<?php echo $_SERVER['PHP_SELF']; ?>">
+    <select class="form-control" name="kat">
+        <?php
     echo $query;
     foreach ($pdo -> query($query) as $row){
         echo ('<option value="'.$row['KategorieID'].'">'.$row['Bezeichnung'].'</option>\n');
@@ -66,8 +58,10 @@ echo ("<button type='submit' class='btn btn-primary'>Auswählen</button></div>")
 echo ('</form>');
 
 if (isset($_GET['kat'])) {
+
     $_SESSION["kategorie"] = $_GET['kat'];
     ?>
+    <form action="ausgabe.php" method="get">
     <div class="panel panel-default" style="margin-left: auto;margin-right: auto; margin-top: 20px">
         <div class="panel-heading" style="text-align: center">Thema -
             <?php
@@ -75,25 +69,35 @@ if (isset($_GET['kat'])) {
             foreach ($pdo -> query($query) as $row){
                 echo $row['Bezeichnung'];}?>
         </div>
-        <div class="panel-body">
+        <ul class="panel-body">
             <?php
             $query = 'select * from fragen where FK_Kategorie ='.$_SESSION["kategorie"];
-            foreach ($pdo -> query($query) as $row) {
-                echo '<div class="list-group"><a href="#" class="list-group-item active">';
-                echo $row['Frage'];
-                echo'</a>';
-                $query2 = 'select * from antworten where FK_FragenID ='.$row['FragenID'];
-                foreach ($pdo -> query($query2) as $row2) {
-                    echo '<a href="#" class="list-group-item">',$row2['Text'],'</a>';
+            foreach ($pdo -> query($query) as $row) {?>
+                <div class="list-group"><li href="#"  class="list-group-item active">
+                        <?php
+                        echo $row['Frage'];
+                        echo'</li>';
+                        $query2 = 'select * from antworten where FK_FragenID ='.$row['FragenID'];
+                        foreach ($pdo -> query($query2) as $row2) {
+                            ?>
+                        <li href="#" class="list-group-item ">
+                            <span>
+                            <input required type="radio" value="<?php echo $row2['AntwortID']?>" id="id<?php echo $row2['AntwortID']?>" name="frage<?php echo $row2['FK_FragenID']?>">
+                            <label for="frage<?php echo $row2['FK_FragenID']?>"><?php echo $row2['Text']?></label>
+                            </span>
+                        </li>
+                        <?php
                 }
                 echo '</div>';
             }
             ?>
         </div>
-    </div>
+    </ul>
+        <input class="btn btn-primary" type="submit" value="Auswärten">
+    </form>
     <?php
-    echo '<form name="fragen" method="GET" action="'.htmlspecialchars($_SERVER["PHP_SELF"]).'">';
-    echo('<button type="reset" value="Reset" onclick="reload()" class="btn btn-primary">Reset</button>');
+    echo '<form name="fragen" method="GET" action="">';
+    echo('<button type="reset" value="reset" onclick="window.location.href=\'index1.php\'" class="btn btn-primary" style="margin-bottom: 0">Erneut Abfragen</button>');
 }
 echo ("</form>");
 ?>
