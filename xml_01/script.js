@@ -1,5 +1,5 @@
 function submitForm(action) {
-    var form = document.getElementById('baseform');
+    let form = document.getElementById('baseform');
     form.action = action;
     form.submit();
-};
+}
