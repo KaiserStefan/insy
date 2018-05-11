@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE tankstore [
+        <!ELEMENT tankstore (tank)*>
+        <!ELEMENT tank (name|operating_country|weight|crew)*>
+        <!ATTLIST tank
+                category CDATA #REQUIRED>
+        <!ELEMENT name (#PCDATA)>
+        <!ELEMENT operating_country (#PCDATA)>
+        <!ELEMENT weight (#PCDATA)>
+        <!ATTLIST weight
+                unit CDATA #REQUIRED>
+        <!ELEMENT crew (#PCDATA)>
+        <!ATTLIST crew
+                type CDATA #REQUIRED>
+        ]>
+<tankstore>
+    <tank category="Main Battle Tank">
+        <name>Leopard 2</name>
+        <operating_country>Austria</operating_country>
+        <weight unit="tonnes">62,3</weight>
+        <crew type="operator">4</crew>
+    </tank>
+    <tank category="Armoured Fighting Vehicle">
+        <name>ASCOD Ulan</name>
+        <operating_country>Austria</operating_country>
+        <weight unit="tonnes">26,3</weight>
+        <crew type="operator">3</crew>
+        <crew type="passenger">8</crew>
+    </tank>
+    <tank category="Main Battle Tank">
+        <name>T-14 Armata</name>
+        <operating_country>Russian Federation</operating_country>
+        <weight unit="tonnes">48</weight>
+        <crew type="operator">3</crew>
+    </tank>
+    <tank category="Main Battle Tank">
+        <name>M1A1 Abrams</name>
+        <operating_country>United States of America</operating_country>
+        <weight unit="tonnes">57</weight>
+        <crew type="operator">4</crew>
+    </tank>
+</tankstore>

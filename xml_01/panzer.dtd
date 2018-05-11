@@ -1,0 +1,28 @@
+<?xml encoding="UTF-8"?>
+
+<!ELEMENT tankstore (tank)+>
+<!ATTLIST tankstore
+    xmlns CDATA #FIXED ''>
+
+<!ELEMENT tank (name,operating_country,weight,crew+)>
+<!ATTLIST tank
+    xmlns CDATA #FIXED ''
+    category CDATA #REQUIRED>
+
+<!ELEMENT name (#PCDATA)>
+<!ATTLIST name
+    xmlns CDATA #FIXED ''>
+
+<!ELEMENT operating_country (#PCDATA)>
+<!ATTLIST operating_country
+    xmlns CDATA #FIXED ''>
+
+<!ELEMENT weight (#PCDATA)>
+<!ATTLIST weight
+    xmlns CDATA #FIXED ''
+    unit  #REQUIRED>
+
+<!ELEMENT crew (#PCDATA)>
+<!ATTLIST crew
+    xmlns CDATA #FIXED ''
+    type  #REQUIRED>
