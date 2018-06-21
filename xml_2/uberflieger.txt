@@ -1,0 +1,199 @@
+DROP DATABASE IF EXISTS uberflieger;
+
+CREATE DATABASE IF NOT EXISTS uberflieger
+DEFAULT CHARACTER SET utf8
+DEFAULT COLLATE utf8_general_ci;
+
+USE uberflieger;
+
+CREATE TABLE flugzeug_hersteller (
+  pk_id INTEGER PRIMARY KEY,
+  bezeichnung VARCHAR(50) NOT NULL,
+  website VARCHAR(50)
+);
+
+CREATE TABLE flugzeugtyp (
+  pk_id INTEGER PRIMARY KEY,
+  bezeichnung VARCHAR(50) NOT NULL,
+  fk_hersteller INTEGER NOT NULL,
+  CONSTRAINT fk_hersteller FOREIGN KEY (fk_hersteller) REFERENCES flugzeug_hersteller(pk_id)
+  ON DELETE CASCADE  
+);
+
+CREATE TABLE flughafen (
+  pk_iata CHAR(3) PRIMARY KEY,
+  bezeichnung VARCHAR(50),
+  ort VARCHAR(50) NOT NULL,
+  land VARCHAR(50) NOT NULL
+);
+
+CREATE TABLE vielfliegerprogramm (
+  pk_id INTEGER PRIMARY KEY,
+  bezeichnung VARCHAR(50)
+);
+
+CREATE TABLE fluggesellschaft (
+  pk_iata CHAR(3) PRIMARY KEY,
+  bezeichnung VARCHAR(50),
+  gruendungsjahr YEAR,
+  fk_vielfliegerprogramm INTEGER,
+  fk_heimatflughafen CHAR(3),
+  CONSTRAINT fk_flugges_VFPrg FOREIGN KEY (fk_vielfliegerprogramm) 
+	REFERENCES vielfliegerprogramm(pk_id)
+	ON DELETE SET NULL,
+  CONSTRAINT fk_heimatflughafen FOREIGN KEY (fk_heimatflughafen)
+	REFERENCES flughafen(pk_iata)
+);
+
+CREATE TABLE flugzeug (
+  pk_id INTEGER PRIMARY KEY,
+  lfkz VARCHAR(10) NOT NULL UNIQUE,
+  baujahr YEAR NOT NULL,
+  sitzplaetze INTEGER,
+  fk_flugzeugtyp INTEGER NOT NULL,
+  fk_fluggesellschaft CHAR(3),
+  CONSTRAINT fk_flugzeugtyp FOREIGN KEY (fk_flugzeugtyp) 
+	REFERENCES flugzeugtyp(pk_id),
+  CONSTRAINT fk_flugzeug_flugges FOREIGN KEY (fk_fluggesellschaft)
+	REFERENCES fluggesellschaft(pk_iata)
+);
+
+CREATE TABLE flug (
+  pk_id INTEGER PRIMARY KEY,
+  flug_nr CHAR(5) NOT NULL,
+  start_dat DATE NOT NULL,
+  start_t TIME NOT NULL,
+  lande_t TIME NOT NULL,
+  entfernung INTEGER,
+  fk_start_flughafen CHAR(3) NOT NULL,
+  fk_ziel_flughafen CHAR(3) NOT NULL,
+  fk_flugzeug INTEGER NOT NULL,
+  CONSTRAINT fk_start_flughafen FOREIGN KEY (fk_start_flughafen) 
+	REFERENCES flughafen(pk_iata),
+  CONSTRAINT fk_ziel_flughafen FOREIGN KEY (fk_ziel_flughafen) 
+	REFERENCES flughafen(pk_iata),
+  CONSTRAINT fk_flugzeug FOREIGN KEY (fk_flugzeug) 
+	REFERENCES flugzeug(pk_id)
+);
+
+CREATE TABLE passagier (
+  pk_id INTEGER PRIMARY KEY,
+  vorname VARCHAR(30) NOT NULL,
+  nachname VARCHAR(30) NOT NULL,
+  land VARCHAR(50),
+  ort VARCHAR(50),
+  plz VARCHAR(10),
+  strasse VARCHAR(50)
+);
+
+CREATE TABLE ticket (
+  pk_id INTEGER PRIMARY KEY,
+  preis DECIMAL(9,2) NOT NULL CHECK (preis > 0),
+  fk_passagier INTEGER NOT NULL,
+  fk_flug INTEGER NOT NULL,
+  CONSTRAINT fk_ticket_passagier FOREIGN KEY (fk_passagier) 
+	REFERENCES passagier(pk_id),
+  CONSTRAINT fk_ticket_flug FOREIGN KEY (fk_flug) 
+	REFERENCES flug(pk_id)
+);
+
+CREATE TABLE mitarbeiter (
+  pk_id INTEGER PRIMARY KEY,
+  vorname VARCHAR(30) NOT NULL,
+  nachname VARCHAR(30) NOT NULL,
+  gebDat DATE NOT NULL,
+  svnr CHAR(10) NOT NULL UNIQUE,
+  fk_fluggesellschaft CHAR(3),
+  CONSTRAINT fk_ma_flugges FOREIGN KEY (fk_fluggesellschaft) 
+	REFERENCES fluggesellschaft(pk_iata)
+);
+
+CREATE TABLE gehalt (
+  pk_fk_mitarbeiter INTEGER,
+  pk_von DATE,
+  bis DATE,
+  betrag DECIMAL(9,2) NOT NULL CHECK (betrag > 0),
+  PRIMARY KEY (pk_fk_mitarbeiter, pk_von),
+  CONSTRAINT fk_gehalt_ma FOREIGN KEY (pk_fk_mitarbeiter)
+	REFERENCES mitarbeiter(pk_id)
+    ON DELETE CASCADE
+);
+
+CREATE TABLE pilot (
+  pk_fk_id INTEGER PRIMARY KEY,
+  letzter_health_check DATE,
+  letztes_sim_training DATE,
+  ist_fluglehrer BOOLEAN,
+  fk_coach INTEGER,
+  CONSTRAINT fk_coach FOREIGN KEY (fk_coach) 
+	REFERENCES pilot(pk_fk_id),
+  CONSTRAINT fk_pilot_ma FOREIGN KEY (pk_fk_id) 
+	REFERENCES mitarbeiter(pk_id)
+    ON DELETE CASCADE
+);
+
+CREATE TABLE cabincrew (
+  pk_fk_id INTEGER PRIMARY KEY,
+  CONSTRAINT fk_cabincrew_ma FOREIGN KEY (pk_fk_id) 
+	REFERENCES mitarbeiter(pk_id)
+    ON DELETE CASCADE
+);
+
+CREATE TABLE mitarbeiter_tel (
+  pk_id INTEGER PRIMARY KEY,
+  nummer VARCHAR(15) NOT NULL,
+  fk_mitarbeiter INTEGER NOT NULL,
+  CONSTRAINT fk_matarbeiter FOREIGN KEY (fk_mitarbeiter) 
+	REFERENCES mitarbeiter(pk_id)
+    ON DELETE CASCADE
+);
+
+CREATE TABLE sprache (
+  pk_id INTEGER PRIMARY KEY,
+  bezeichnung VARCHAR(20)
+);
+
+CREATE TABLE cabincrew_spricht (
+  pk_fk_mitarbeiter INTEGER NOT NULL,
+  pk_fk_sprache INTEGER NOT NULL,
+  PRIMARY KEY (pk_fk_mitarbeiter, pk_fk_sprache),
+  CONSTRAINT fk_spricht_ma FOREIGN KEY (pk_fk_mitarbeiter) 
+	REFERENCES mitarbeiter(pk_id)
+    ON DELETE CASCADE,
+  CONSTRAINT fk_sprache FOREIGN KEY (pk_fk_sprache)
+	REFERENCES sprache(pk_id)
+);
+
+CREATE TABLE pilot_darf_fliegen (
+  pk_fk_pilot INTEGER NOT NULL,
+  pk_fk_flugzeugtyp INTEGER NOT NULL,
+  PRIMARY KEY (pk_fk_flugzeugtyp, pk_fk_pilot),
+  CONSTRAINT fk_pilot_darf_fliegen FOREIGN KEY (pk_fk_pilot)
+	REFERENCES pilot(pk_fk_id),
+  CONSTRAINT fk_darf_flugzeugtyp_fliegen FOREIGN KEY (pk_fk_flugzeugtyp)
+	REFERENCES flugzeugtyp(pk_id)  
+);
+
+CREATE TABLE pilot_fliegt (
+  pk_fk_pilot INTEGER NOT NULL,
+  pk_fk_flug INTEGER NOT NULL,
+  funktion CHAR(8) NOT NULL,
+  PRIMARY KEY (pk_fk_pilot, pk_fk_flug),
+  CONSTRAINT fk_pilot_fliegt_pilot FOREIGN KEY (pk_fk_pilot)
+	REFERENCES pilot(pk_fk_id),
+  CONSTRAINT fk_pilot_fliegt_flug FOREIGN KEY (pk_fk_flug)
+	REFERENCES flug(pk_id)  
+);
+
+CREATE TABLE vielflieger_mitgliedschaft (
+  pk_mitgliedsnummer INTEGER PRIMARY KEY,
+  fk_passagier INTEGER NOT NULL,
+  fk_vielfliegerprogramm INTEGER NOT NULL,
+  meilen INTEGER,
+  CONSTRAINT fk_mitgliedsch_passagier FOREIGN KEY (fk_passagier)
+	REFERENCES passagier(pk_id)
+	ON DELETE CASCADE,
+  CONSTRAINT fk_mitgliedsch_VFPrg FOREIGN KEY (fk_vielfliegerprogramm)
+	REFERENCES vielfliegerprogramm(pk_id)
+	ON DELETE CASCADE
+);

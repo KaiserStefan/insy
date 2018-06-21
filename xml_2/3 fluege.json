@@ -1,0 +1,41 @@
+[
+	{
+		"FlugzeugHersteller" : "Airbus",
+		"Flugzeug" : "A321-211",
+		"Luftfahrzeugkennzeichen" : "ABC",
+		"Sitzplaetze" : 50,
+		"Flugnummer" : "12345",
+		"Startdatum" : "2017-05-01",
+		"Startzeit" : "11:12:00",
+		"Landezeit" : "12:12:00",
+		"Startflughafen" : "VIE",
+		"Zielflughafen" : "FRA",
+		"Pilotenname" : "Maks Mustermann"
+	},
+	{
+		"FlugzeugHersteller" : "Airbus",
+		"Flugzeug" : "A380",
+		"Luftfahrzeugkennzeichen" : "CDE",
+		"Sitzplaetze" : 100,
+		"Flugnummer" : "13245",
+		"Startdatum" : "2017-06-04",
+		"Startzeit" : "15:22:00",
+		"Landezeit" : "16:22:00",
+		"Startflughafen" : "LHR",
+		"Zielflughafen" : "CDG",
+		"Pilotenname" : "Temso Uny"
+	},
+	{
+		"FlugzeugHersteller" : "Airbus",
+		"Flugzeug" : "A321-211",
+		"Luftfahrzeugkennzeichen" : "OE-G0004",
+		"Sitzplaetze" : 50,
+		"Flugnummer" : "OS141",
+		"Startdatum" : "2018-05-16",
+		"Startzeit" : "07:20:00",
+		"Landezeit" : "08:35:00",
+		"Startflughafen" : "VIE",
+		"Zielflughafen" : "FRA",
+		"Pilotenname" : "Michael Meister"
+	}
+]

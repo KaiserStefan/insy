@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE fluege [
+		<!ELEMENT fluege (flug)*>
+		<!ELEMENT flug (FlugzeugHersteller|Flugzeug|Luftfahrzeugkennzeichen|Sitzplaetze|Flugnummer|Startdatum|Startzeit|Landezeit|Startflughafen|Zielflughafen|Pilotenname)*>
+		<!ELEMENT FlugzeugHersteller (#PCDATA)>
+		<!ELEMENT Flugzeug (#PCDATA)>
+		<!ELEMENT Luftfahrzeugkennzeichen (#PCDATA)>
+		<!ELEMENT Sitzplaetze (#PCDATA)>
+		<!ELEMENT Flugnummer (#PCDATA)>
+		<!ELEMENT Startdatum (#PCDATA)>
+		<!ELEMENT Startzeit (#PCDATA)>
+		<!ELEMENT Landezeit (#PCDATA)>
+		<!ELEMENT Startflughafen (#PCDATA)>
+		<!ELEMENT Zielflughafen (#PCDATA)>
+		<!ELEMENT Pilotenname (#PCDATA)>
+		]>
+<fluege>
+
+	<flug>
+		<FlugzeugHersteller>Airbus</FlugzeugHersteller>
+		<Flugzeug>A321-211</Flugzeug>
+		<Luftfahrzeugkennzeichen>ABC</Luftfahrzeugkennzeichen>
+		<Sitzplaetze>50</Sitzplaetze>
+		<Flugnummer>12345</Flugnummer>
+		<Startdatum>2017-05-01</Startdatum>
+		<Startzeit>11:12:00</Startzeit>
+		<Landezeit>12:12:00</Landezeit>
+		<Startflughafen>VIE</Startflughafen>
+		<Zielflughafen>FRA</Zielflughafen>
+		<Pilotenname>Maks Mustermann</Pilotenname>
+	</flug>
+
+	<flug>
+		<FlugzeugHersteller>Airbus</FlugzeugHersteller>
+		<Flugzeug>A380</Flugzeug>
+		<Luftfahrzeugkennzeichen>CDE</Luftfahrzeugkennzeichen>
+		<Sitzplaetze>100</Sitzplaetze>
+		<Flugnummer>13245</Flugnummer>
+		<Startdatum>2017-06-04</Startdatum>
+		<Startzeit>15:22:00</Startzeit>
+		<Landezeit>16:22:00</Landezeit>
+		<Startflughafen>LHR</Startflughafen>
+		<Zielflughafen>CDG</Zielflughafen>
+		<Pilotenname>Temso Uny</Pilotenname>
+	</flug>
+
+	<flug>
+		<FlugzeugHersteller>Airbus</FlugzeugHersteller>
+		<Flugzeug>A321-211</Flugzeug>
+		<Luftfahrzeugkennzeichen>OE-G0004</Luftfahrzeugkennzeichen>
+		<Sitzplaetze>50</Sitzplaetze>
+		<Flugnummer>OS141</Flugnummer>
+		<Startdatum>2018-05-16</Startdatum>
+		<Startzeit>07:20:00</Startzeit>
+		<Landezeit>08:35:00</Landezeit>
+		<Startflughafen>VIE</Startflughafen>
+		<Zielflughafen>FRA</Zielflughafen>
+		<Pilotenname>Michael Meister</Pilotenname>
+	</flug>
+</fluege>

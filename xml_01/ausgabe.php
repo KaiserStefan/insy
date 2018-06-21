@@ -51,7 +51,13 @@ if ($dom->validate()) {
         <?php
         $xml=simplexml_load_file("panzer.xml") or die("Error: Cannot load file!");
         $categorys = array();
+
+
         $json = json_encode($xml);
+        //echo $json;
+
+
+        $array = json_decode($json,TRUE);
         foreach ($xml->children() as $child) {
             if ($child['category'] == $category) {
                 ?>

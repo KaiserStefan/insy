@@ -27,13 +27,16 @@ catch (PDOException $error) {
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
     <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
-    <script src="script.js"></script>
+    <script type="text/javascript" src="script.js"></script>
 </head>
 <body>
 <?php
 echo '<h1>Userverwaltung</h1>';
 ?>
-<form method="POST" action="<?php echo $_SERVER['PHP_SELF']?>">
+<!--
+<form method="POST" action="?php echo $_SERVER['PHP_SELF']?>">
+-->
+<form id="baseform" method="POST">
 
 <select name="sel_user">';
     <?php
@@ -52,56 +55,10 @@ foreach ($pdo -> query($query) as $row) {
 // Close the Select Box
 echo '</select>';
 
-echo ("<button name='update' value='Update' type='submit'>Ändern</button>");
-echo ("<button name='delete' value='Delete' type='submit'>Löschen</button>");
-echo ("<button name='neu' value='Change' type='submit'>Einfügen</button>");
-echo '</form>';
+echo ("<button name='update' onclick=\"submitForm('change.php')\" value='Update' type='submit'>Ändern</button>");
+echo ("<button name='delete' onclick=\"submitForm('delete.php')\" value='Delete' type='submit'>Löschen</button>");
+echo ("<button name='neu'  onclick=\"submitForm('new.php')\" value='Change' type='submit'>Einfügen</button>");
 
-if (isset($_POST["update"])) {
-    ?>
-    <div method="GET" name="updateform" action="<?php echo $_SERVER['PHP_SELF']?><div>">
-    <?php
-    $query = 'SELECT * FROM user.users where id ='.$_POST['sel_user'];
-    foreach ($pdo -> query($query) as $row2) {
-        echo "<div>".$row2['id'].". User:";
-    ?>
-        <input name="useri" required type="text" value="<?php echo $row2['user']?>" name="user">
-        Password:<input name="passwdi" required type="password" value="<?php echo $row2['passwort']?>" name="passwd">
-        <button name='updatef' value='Updatef' type='submit'>Ändern</button>
-    </div></form>
-    <?php
-    }
-    echo('<button type="reset" value="reset" onclick="window.location.href=\'index1.php\'">Return</button>');
-}
-else if (isset($_POST["delete"])) {
-    try {
-        $conn = new PDO("mysql:host=localhost;dbname=user", $username, $password);
-        $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-        $sql = "DELETE FROM user.users WHERE id=".$_POST['sel_user'];
-        $conn->exec($sql);
-            echo 'Daten wurden erfolgreich gelösct';
-        echo('<button type="reset" value="reset" onclick="window.location.href=\'index1.php\'">Return</button>');
-        }catch(PDOException  $e ){
-        echo "Fehler: ".$e;
-        exit();
-    }
-}
-else if (isset($_POST["neu"])) {
-    ?>
-<div method="GET" name="updateform" action="<?php echo $_SERVER['PHP_SELF']?><div>">
-    <?php
-    $query = 'SELECT * FROM user.users where id ='.$_POST['sel_user'];
-    foreach ($pdo -> query($query) as $row2) {
-    ?>
-    Neuer User:
-    <input name="useri" required type="text" value="" name="user">
-    Password:<input name="passwdi" required type="password" value="" name="passwd">
-    <button name='updatef' value='Updatef' type='submit'>Ändern</button>
-</div></form>
-<?php
-}
-echo('<button type="reset" value="reset" onclick="window.location.href=\'index1.php\'">Return</button>');
-}
 
 if (isset($_GET["updatef"])) {
     try {

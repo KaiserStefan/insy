@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<quiz>
+    <kategorien>
+        <kategorie ID="1">
+
+            <fragen>
+                <frage text="asdf">
+                    <antworten>
+                        <antwort richtig="true" text="asdf">
+                        </antwort>
+                        <antwort richtig="false" text="asdf">
+
+                        </antwort>
+                    </antworten>
+                </frage>
+                <frage>
+                    <frage text="fdas">
+                        <antworten>
+                            <antwort richtig="true" text="asdf">
+                            </antwort>
+                            <antwort richtig="false" text="asdf">
+
+                            </antwort>
+                        </antworten>
+                    </frage>
+                </frage>
+            </fragen>
+            <bezeichnung>
+            </bezeichnung>
+        </kategorie>
+        <kategorie ID="2">
+
+        </kategorie>
+    </kategorien>
+</quiz>
